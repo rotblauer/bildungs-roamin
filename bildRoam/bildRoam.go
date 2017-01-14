@@ -41,7 +41,7 @@ func GetLatLngTime(path string) (lat, lng float64, t time.Time, err error) {
 		// log.Println("datetime")
 		// log.Fatal(err)
 		// return 0, 0, t, err
-		t = time.Now()
+		t = time.Date(1901, time.January, 1, 1, 1, 1, 1, time.Local)
 	}
 
 	lat, lng, err = x.LatLong()
