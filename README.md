@@ -9,4 +9,6 @@ The CSV __doesn't__ have a header row. It formats `time` as golang `time.UnixTim
 
 
 :cat2: :footprints:
+
+### plays well with [https://github.com/rotblauer/catTracks](https://github.com/rotblauer/catTracks)
 ::paw:a
