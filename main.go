@@ -1,7 +1,9 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+
 	"github.com/rotblauer/bildRoam/bildRoam"
 	// "log"
 	"encoding/csv"
@@ -11,7 +13,6 @@ import (
 	"time"
 )
 
-var myName = "ia"
 var headerLine = []string{"name", "time", "lat", "long"}
 
 func floatToString(input float64) string {
@@ -20,20 +21,19 @@ func floatToString(input float64) string {
 }
 
 func main() {
+	var output string
+	var iphotosDir string
+	var myName string
 
-	// // fil := "./iphoto-export/IMG_4019.JPG"
-	// // fil := "IMG_4019.JPG"
-	// // fil := "01b TITLE-2.png"
-	// // fil := "/Users/ia/Pictures/iphoto-export/01b TITLE-2.png"
-	// // filp, _ := filepath.Abs(fil)
-	// lat, lng, ti, err := bildRoam.GetLatLngTime(fil)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return
-	// }
-	// fmt.Println(lat, lng, ti)
+	// go run main.go -dir ~/Desktop/locs/ -out ~/Desktop/locs/whois.csv -name jl
 
-	file, err := os.Create("iwazhere.csv")
+	flag.StringVar(&output, "out", "iwazhere.csv", "specify the output .csv file")
+	flag.StringVar(&iphotosDir, "dir", "/Users/ia/Pictures/iphoto-export", "directory with photos")
+	flag.StringVar(&myName, "name", "ia", "your tag name")
+
+	flag.Parse()
+
+	file, err := os.Create(output)
 	if err != nil {
 		fmt.Println("Can't create file.", err)
 	}
@@ -41,7 +41,6 @@ func main() {
 
 	writer := csv.NewWriter(file)
 
-	iphotosDir := "/Users/ia/Pictures/iphoto-export"
 	filepath.Walk(iphotosDir, func(path string, info os.FileInfo, err error) error {
 		if info.IsDir() {
 			return nil
