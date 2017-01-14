@@ -1,10 +1,10 @@
 package bildRoam
 
 import (
-	"errors"
+	// "errors"
 	"github.com/rwcarlsen/goexif/exif"
-	"log"
-	"net/http"
+	// "log"
+	// "net/http"
 	"os"
 	"time"
 )
@@ -25,47 +25,28 @@ func GetLatLngTime(path string) (lat, lng float64, t time.Time, err error) {
 	f, err := os.Open(path)
 	defer f.Close()
 	if err != nil {
-		// log.Println("os opening")
-		// log.Fatal(err)
 		return 0, 0, time.Now(), err
 	}
-
-	// log.Println("Opening ", path)
-
-	buff := make([]byte, 512) // docs tell that it take only first 512 bytes into consideration
-	if _, err = f.Read(buff); err != nil {
-		// log.Println(err) // do something with that error
-		return 0, 0, time.Now(), err
-	}
-	contentType := http.DetectContentType(buff)
-	if !stringInSlice(contentType, allowedContentTypes) {
-		// log.Println("Unallowed content type: ", contentType)
-		err = errors.New("Unallowed content type.")
-		return 0, 0, time.Now(), err
-	}
-	// log.Println("Content type: ", contentType)
 
 	x, err := exif.Decode(f) //-> *Exif, err
 	if err != nil {
-		// log.Println("exif decoding")
-		// log.Println(err)
 		return 0, 0, time.Now(), err
 	}
 
 	f.Close()
 
+	//sometimes this throws an actual erro like seconds out of bounds at 82
 	t, err = x.DateTime()
 	if err != nil {
-		log.Println("datetime")
-		log.Fatal(err)
-		return 0, 0, time.Now(), err
+		// log.Println("datetime")
+		// log.Fatal(err)
+		// return 0, 0, t, err
+		t = time.Now()
 	}
 
 	lat, lng, err = x.LatLong()
 	if err != nil {
-		log.Println("latlng")
-		log.Fatal(err)
-		return 0, 0, t, err
+		// return 0, 0, t, err
 	}
 
 	return lat, lng, t, err
